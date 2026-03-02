@@ -1,6 +1,6 @@
 // lexer.h
 
-#ifndef PARSER_LEXER_H
-#define PARSER_LEXER_H
+#ifndef MINI_DB_LEXER_H
+#define MINI_DB_LEXER_H
 
-# endif // lexer.h
+#endif //MINI_DB_LEXER_H

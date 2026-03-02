@@ -2,6 +2,8 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+#include <string>
+
 // Basic ennumeration of SQL tokens
 enum class TokenType {
     // KEYWORDS
@@ -16,12 +18,16 @@ enum class TokenType {
     TOKEN_KEYWORD_DELETE,   // DELETE
     TOKEN_KEYWORD_UPDATE,   // UPDATE
     TOKEN_KEYWORD_SET,  // SET
-    TOKEN_KEYWORD_BEGIN,    // BEGIM
+    TOKEN_KEYWORD_BEGIN,    // BEGIN
     TOKEN_KEYWORD_COMMIT,   // COMMIT
     TOKEN_KEYWORD_ROLLBACK, // ROLLBACK
     TOKEN_KEYWORD_INDEX,    // INDEX
     TOKEN_KEYWORD_ON,   // ON
     TOKEN_KEYWORD_NULL, // NULL
+
+    // "DATA TYPES"
+    TOKEN_KEYWORD_INT,  // INT
+    TOKEN_KEYWORD_TEXT, // TEXT
 
     // OPERATORS
     TOKEN_OPERATOR_EQUAL,   // =
@@ -41,13 +47,69 @@ enum class TokenType {
     TOKEN_OPERATOR_LIKE, // LIKE
     TOKEN_OPERATOR_IN,  // IN
     TOKEN_OPERATOR_BETWEEN, // BETWEEN
-    TOKEN_OPERATOR_IS_NULL  // IS NULL
+    TOKEN_OPERATOR_IS_NULL,  // IS NULL
+
+    // LITERALS
+    TOKEN_LITERAL_INTEGER,
+    TOKEN_LITERAL_FLOAT,
+    TOKEN_LITERAL_STRING,
+    TOKEN_LITERAL_BOOL_TRUE,
+    TOKEN_LITERAL_BOOL_FALSE,
+
+    // IDENTIFIER
+    TOKEN_IDENTIFIER,
+
+    // PUNCTUATION
+    TOKEN_PUNCTUATION_LPAREN,   // (
+    TOKEN_PUNCTUATION_RPAREN,   // )
+    TOKEN_COMMA,    // ,
+    TOKEN_SEMICOLON,    // ;
+    TOKEN_DOT,  // .
+
+    // SPCECIAL
+    TOKEN_EOF,
+    TOKEN_UNKNOWN,
 };
 
 // Token Structure
-typedef struct {
-    TokenType type; // Token type
-    char * lexeme;  // string that represents token
-} Token;
+struct Token {
+    TokenType type;
+    std::string value;
+    int line;
+    int column;
+
+    // Principal constructor
+    Token(TokenType type, std::string value, int line, int column) {
+        this->type = type;
+        this->value = value;
+        this->line = line;
+        this->column = column;
+    }
+
+    // Default constructor
+    Token() {
+        this->type = TokenType::TOKEN_UNKNOWN;
+        this->value = "";
+        this->line = 0;
+        this->column = 0;
+    }
+
+    // Methods
+    bool isKeyword() const {
+        return type >= TokenType::TOKEN_KEYWORD_SELECT && type <= TokenType::TOKEN_KEYWORD_TEXT;
+    }
+
+    bool isOperator() const {
+        return type >= TokenType::TOKEN_OPERATOR_AND && type <= TokenType::TOKEN_OPERATOR_DIVIDE;
+    }
+
+    bool isLiteral() const {
+        return type >= TokenType::TOKEN_LITERAL_INTEGER && type <= TokenType::TOKEN_LITERAL_BOOL_FALSE;
+    }
+
+    std::string toString() const;
+};
+
+std::string tokenTypeName(TokenType type);
 
 #endif // TOKEN_H
