@@ -1,4 +1,6 @@
 // token.h
+// Lexic unity
+
 #ifndef TOKEN_H
 #define TOKEN_H
 
@@ -31,8 +33,7 @@ enum class TokenType {
 
     // OPERATORS
     TOKEN_OPERATOR_EQUAL,   // =
-    TOKEN_OPERATOR_DIFFERENT, // !=
-    TOKEN_OPERATOR_NOT_EQUAL,   // <>
+    TOKEN_OPERATOR_NOT_EQUAL,   // <> or !=
     TOKEN_OPERATOR_LESS_THAN,   // <
     TOKEN_OPERATOR_GREATER_THAN, // >
     TOKEN_OPERATOR_LESS_THAN_OR_EQUAL,  // <=
@@ -47,7 +48,7 @@ enum class TokenType {
     TOKEN_OPERATOR_LIKE, // LIKE
     TOKEN_OPERATOR_IN,  // IN
     TOKEN_OPERATOR_BETWEEN, // BETWEEN
-    TOKEN_OPERATOR_IS_NULL,  // IS NULL
+    TOKEN_OPERATOR_IS,  // IS
 
     // LITERALS
     TOKEN_LITERAL_INTEGER,
@@ -95,14 +96,17 @@ struct Token {
     }
 
     // Methods
+    // Comprovem que sigui keyword
     bool isKeyword() const {
         return type >= TokenType::TOKEN_KEYWORD_SELECT && type <= TokenType::TOKEN_KEYWORD_TEXT;
     }
 
+    // Comprovem que es operator
     bool isOperator() const {
         return type >= TokenType::TOKEN_OPERATOR_AND && type <= TokenType::TOKEN_OPERATOR_DIVIDE;
     }
 
+    // Comprovem si és literal
     bool isLiteral() const {
         return type >= TokenType::TOKEN_LITERAL_INTEGER && type <= TokenType::TOKEN_LITERAL_BOOL_FALSE;
     }
