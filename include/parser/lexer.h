@@ -24,8 +24,8 @@ class Lexer {
         char advance();             // Read and advance
         char isAtEnd() const;
 
-        void skipWhitespace();
-        void skipLineComment();
+        void skipWhitespace();      // Advance while there are white spaces
+        void skipLineComment();     // When we see "--"
 
         // nextToken will call these methods depending on the value of the first
         Token readIndefierOrKeyword();
