@@ -1,5 +1,5 @@
 // lexer.cpp
-#include "lexer.h"
+#include "../../include/parser/lexer.h"
 
 #include <stdexcept>
 #include <algorithm>

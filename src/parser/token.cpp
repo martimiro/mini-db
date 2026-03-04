@@ -1,5 +1,5 @@
 // lexer.cpp
-#include "token.h"
+#include "../../include/parser/token.h"
 
 // TokenType to String
 std::string tokenTypeName(TokenType type) {

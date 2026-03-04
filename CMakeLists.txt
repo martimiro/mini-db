@@ -5,6 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(mini_db main.cpp
         include/parser/token.h
-        include/parser/token.cpp
-        include/parser/lexer.cpp
+        src/parser/token.cpp
+        src/parser/lexer.cpp
         include/parser/lexer.h)
