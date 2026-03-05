@@ -13,7 +13,7 @@ const std::unordered_map<std::string, TokenType> Lexer::KEYWORDS = {
     {"FROM",                TokenType::TOKEN_KEYWORD_FROM},
     {"WHERE",               TokenType::TOKEN_KEYWORD_WHERE},
     {"INSERT",              TokenType::TOKEN_KEYWORD_INSERT},
-    {"INTO",                TokenType::TOKEN_KEYWORD_INSERT},
+    {"INTO",                TokenType::TOKEN_KEYWORD_INTO},
     {"VALUES",              TokenType::TOKEN_KEYWORD_VALUES},
     {"CREATE",              TokenType::TOKEN_KEYWORD_CREATE},
     {"TABLE",               TokenType::TOKEN_KEYWORD_TABLE},
@@ -125,6 +125,16 @@ Token Lexer::readNumber() {
     while (!isAtEnd() && std::isdigit(peek())) {
         number += advance();
     }
+
+    // Check for decimals
+    if (!isAtEnd() && peek() == '.' && std::isdigit(peekNext())) {
+        number += advance(); // Pass the dot
+        while (!isAtEnd() && std::isdigit(peek())) {
+            number += advance(); // Here we read the decimals
+        }
+        return Token(TokenType::TOKEN_LITERAL_FLOAT, number, startLine, startColumn);
+    }
+
     return Token(TokenType::TOKEN_LITERAL_INTEGER, number, startLine, startColumn);
 }
 

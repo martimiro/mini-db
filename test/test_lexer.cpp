@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 
+int passed = 0;
+int failed = 0;
+
 void printTokens(const std::string& str) {
     std::cout << "SQL statement: " <<str << std::endl;
 
@@ -25,6 +28,7 @@ void assertTokensTypes(const std::string& str, const std::vector<TokenType>& exp
         std::cout << "Expected: " << expected.size() << std::endl;
         std::cout << "Actual: " << tokens.size() << std::endl;
         std::cout << "SQL statement: " << str << std::endl;
+        failed++;
         return;
     }
 
@@ -34,11 +38,13 @@ void assertTokensTypes(const std::string& str, const std::vector<TokenType>& exp
             std::cout << "Expected: " << tokenTypeName(expected[i]) << std::endl;
             std::cout << "Actual: " << tokens[i].toString() << std::endl;
             std::cout << "SQL statement: " << str << std::endl;
+            failed++;
             return;
         }
     }
 
     std::cout << "SUCCESS: " << test << std::endl;
+    passed++;
 }
 
 // TESTS 1
@@ -67,7 +73,7 @@ void testSelectWhere() {
             TokenType::TOKEN_KEYWORD_WHERE,
             TokenType::TOKEN_IDENTIFIER,
             TokenType::TOKEN_OPERATOR_GREATER_THAN,
-            TokenType::TOKEN_IDENTIFIER,
+            TokenType::TOKEN_LITERAL_INTEGER,
             TokenType::TOKEN_SEMICOLON,
             TokenType::TOKEN_EOF,
         },
@@ -173,11 +179,11 @@ void testFloat() {
             TokenType::TOKEN_KEYWORD_WHERE,
             TokenType::TOKEN_IDENTIFIER,
             TokenType::TOKEN_OPERATOR_GREATER_THAN_OR_EQUAL,
-            TokenType::TOKEN_LITERAL_INTEGER,
+            TokenType::TOKEN_LITERAL_FLOAT,
             TokenType::TOKEN_SEMICOLON,
             TokenType::TOKEN_EOF,
         },
-        "Literal float"
+        "LITERAL FLOAT"
         );
 }
 
@@ -247,7 +253,7 @@ void testComment() {
 
 // TEST 11
 void testCaseInsensitive() {
-    assertTokensTypes("select * from USERS where ID = 1",
+    assertTokensTypes("select * from USERS where ID = 1;",
         {
             TokenType::TOKEN_KEYWORD_SELECT,
             TokenType::TOKEN_OPERATOR_MULTIPLY,
@@ -346,7 +352,7 @@ int main() {
     testDifferentsOperators();
     testBooleans();
 
-    std::cout << "END TESTS " << std::endl;
+    std::cout << "END TESTS  with " << passed << " test passed and " << failed << " test failed." << std::endl;
 
     return 0;
 }
