@@ -1,8 +1,8 @@
 // lexer.h
 // Component that generates tokens
 
-#ifndef MINI_DB_LEXER_H
-#define MINI_DB_LEXER_H
+#ifndef LEXER_H
+#define LEXER_H
 
 #include "token.h"
 #include <string>
@@ -41,4 +41,4 @@ class Lexer {
         std::vector<Token> tokenizeAll();
 };
 
-#endif //MINI_DB_LEXER_H
+#endif //LEXER_H
