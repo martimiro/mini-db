@@ -1,6 +1,5 @@
 // lexer.h
 // Component that generates tokens
-
 #ifndef LEXER_H
 #define LEXER_H
 
