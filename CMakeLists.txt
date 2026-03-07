@@ -16,4 +16,5 @@ add_executable(test_lexer
         test/test_lexer.cpp
         src/parser/token.cpp
         src/parser/lexer.cpp
+        test/test_parser.cpp
 )

@@ -71,6 +71,19 @@ class FloatLiteralNode : public ASTNode {
         }
 };
 
+class StringLiteralNode : public ASTNode {
+    public:
+        std::string value;
+
+        explicit StringLiteralNode(std::string v) {
+            this->value = v;
+        }
+
+        std::string toString(int indentitation = 0) const override {
+            return indentitationString(indentitation) + "StringLiteral (" + value + ")";
+        }
+};
+
 class BoolLiteralNode : public ASTNode {
     public:
         bool value;

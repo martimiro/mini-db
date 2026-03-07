@@ -241,7 +241,7 @@ ASTNodePointer Parser::parseUpdate() {
         }
     }
 
-    if (!match(TokenType::TOKEN_KEYWORD_WHERE)) {
+    if (match(TokenType::TOKEN_KEYWORD_WHERE)) {
         node->where = parseExpression();
     }
 
@@ -257,15 +257,95 @@ ASTNodePointer Parser::parseUpdate() {
     // Comparations         -> parse at the end
 
 // Parse Expressions
+
+// Level OR
 ASTNodePointer Parser::parseExpression() {
     ASTNodePointer left = parseAnd();
 
-    while (!match(TokenType::TOKEN_OPERATOR_OR)) {
+    while (check(TokenType::TOKEN_OPERATOR_OR)) {
         TokenType op = peek().type;
         advance();
         ASTNodePointer right = parseAnd();
-        left = std::make_unique<BinaryOpNode>(std::move(left), op,  std::move(right));
+        ASTNodePointer newNode = std::make_unique<BinaryOpNode>(std::move(left), std::move(right), op);
+        left = std::move(newNode);
     }
 
     return left;
+}
+
+// Level AND
+ASTNodePointer Parser::parseAnd() {
+    ASTNodePointer left = parseComparison();
+
+    while (check(TokenType::TOKEN_OPERATOR_AND)) {
+        TokenType op = peek().type;
+        advance();
+        ASTNodePointer right = parseComparison();
+        left = std::make_unique<BinaryOpNode>(std::move(left), std::move(right), op);
+    }
+
+    return left;
+}
+
+// Level comparation
+ASTNodePointer Parser::parseComparison() {
+    ASTNodePointer left = parsePrimary();
+
+    if (check(TokenType::TOKEN_OPERATOR_EQUAL) || check(TokenType::TOKEN_OPERATOR_NOT_EQUAL) ||
+        check(TokenType::TOKEN_OPERATOR_LESS_THAN) || check(TokenType::TOKEN_OPERATOR_GREATER_THAN) ||
+        check(TokenType::TOKEN_OPERATOR_LESS_THAN_OR_EQUAL) || check(TokenType::TOKEN_OPERATOR_GREATER_THAN_OR_EQUAL))
+        {
+            TokenType op = peek().type;
+            advance();
+            ASTNodePointer right = parsePrimary();
+            return std::make_unique<BinaryOpNode>(std::move(left), std::move(right), op);
+    }
+
+    return left;
+}
+
+// Level primary
+ASTNodePointer Parser::parsePrimary() {
+    // Name of the column
+    if (check(TokenType::TOKEN_IDENTIFIER)) {
+        std::string name = peek().value;
+        advance();
+        return std::make_unique<IdentifyNode>(name);
+    }
+
+    // Int
+    if (check(TokenType::TOKEN_LITERAL_INTEGER)) {
+        int value = std::stoi(peek().value);
+        advance();
+        return std::make_unique<IntLiteralNode>(value); // str to int
+    }
+
+    // Float
+    if (check(TokenType::TOKEN_LITERAL_FLOAT)) {
+        float value = std::stof(peek().value);
+        advance();
+        return std::make_unique<FloatLiteralNode>(value);
+    }
+
+    // String
+    if (check(TokenType::TOKEN_LITERAL_STRING)) {
+        std::string value = peek().value;
+        advance();
+        return std::make_unique<StringLiteralNode>(value);
+    }
+
+    // Boolean TRUE
+    if (check(TokenType::TOKEN_LITERAL_BOOL_TRUE)) {
+        advance();
+        return std::make_unique<BoolLiteralNode>(true);
+    }
+
+    // Boolean FALSE
+    if (check(TokenType::TOKEN_LITERAL_BOOL_FALSE)) {
+        advance();
+        return std::make_unique<BoolLiteralNode>(false);
+    }
+
+    throw std::runtime_error( "Error in line: " + std::to_string(peek().line) + " and in column: " +
+        std::to_string(peek().column) + " (value no expected: \"" + peek().value + "\"");
 }

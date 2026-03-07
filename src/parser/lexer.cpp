@@ -176,7 +176,7 @@ Token Lexer::readOperatorOrPunctuation() {
         case '(':   return Token(TokenType::TOKEN_PUNCTUATION_LPAREN, "(", startLine, startColumn);
         case ')':   return Token(TokenType::TOKEN_PUNCTUATION_RPAREN, ")", startLine, startColumn);
         case ',':   return Token(TokenType::TOKEN_COMMA, ",", startLine, startColumn);
-        case ';':   return Token(TokenType::TOKEN_SEMICOLON, ".", startLine, startColumn);
+        case ';':   return Token(TokenType::TOKEN_SEMICOLON, ";", startLine, startColumn);
         case '.':   return Token(TokenType::TOKEN_DOT, ".", startLine, startColumn);
 
         // Operators
