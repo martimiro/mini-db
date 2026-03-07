@@ -18,3 +18,10 @@ add_executable(test_lexer
         src/parser/lexer.cpp
         test/test_parser.cpp
 )
+
+add_executable(test_parser
+        test/test_parser.cpp
+        src/parser/token.cpp
+        src/parser/lexer.cpp
+        src/parser/parser.cpp
+)
