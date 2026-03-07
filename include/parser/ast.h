@@ -93,7 +93,7 @@ class BinaryOpNode : public ASTNode {
 
         BinaryOpNode(ASTNodePointer left, ASTNodePointer right, TokenType op) {
             this->left = std::move(left);
-            this->op = std::move(right);
+            this->right = std::move(right);
             this->op = op;
         }
 
@@ -141,7 +141,7 @@ class InsertNode : public ASTNode {
         std::string toString(int indentitation = 0) const override {
             std::string str = indentitationString(indentitation) + "InsertNode (" + tableName + ")\n";
             for (const auto& value : values) {
-                s += value->toString(indentitation + 1) + "\n";
+                str += value->toString(indentitation + 1) + "\n";
             }
 
             return str;

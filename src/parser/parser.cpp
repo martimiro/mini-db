@@ -110,7 +110,8 @@ ASTNodePointer Parser::parseCreateTable() {
             advance();
         } else {
             throw std::runtime_error("Error in line: "+ std::to_string(peek().line) + " and column: " +
-                std::to_string(peek().column) + " ( column type not valid : \"" + peek().value + "\" expected INT or TEXT)");
+                std::to_string(peek().column) + " ( column type not valid : \"" + peek().value +
+                "\" expected INT or TEXT)");
         }
 
         node->columns.push_back({columnName.value, columnType});
@@ -194,4 +195,77 @@ ASTNodePointer Parser::parseSelect() {
 }
 
 // Parse delete
-ASTNodePointer Parser::parseDelete() {}
+ASTNodePointer Parser::parseDelete() {
+    // We have already done DELETE, we need FROM
+    consume(TokenType::TOKEN_KEYWORD_FROM, "expected FROM after DELETE");
+
+    // Table name
+    Token& tokenName = consume(TokenType::TOKEN_IDENTIFIER, "expected table name");
+    auto node = std::make_unique<DeleteNode>();
+    node->tableName = tokenName.value;
+
+    // WHERE (optional)
+    if (match(TokenType::TOKEN_KEYWORD_WHERE)) {
+        node->where = parseExpression();
+    }
+
+    // Semicolon optional
+    match(TokenType::TOKEN_SEMICOLON);
+
+    return node;
+}
+
+// Parse Update
+ASTNodePointer Parser::parseUpdate() {
+    // Table name
+    Token& tokenName = consume(TokenType::TOKEN_IDENTIFIER, "expected table name");
+    auto node = std::make_unique<UpdateNode>();
+    node->tableName = tokenName.value;
+
+    // SET
+    consume(TokenType::TOKEN_KEYWORD_SET, "expected SET");
+
+    // Read assignment (col = value, col = value...)
+    while (!isAtEnd()) {
+        Token& columnName = consume(TokenType::TOKEN_IDENTIFIER, "expected column name");
+        consume(TokenType::TOKEN_OPERATOR_EQUAL, "expected '='");
+        ASTNodePointer value = parsePrimary();
+
+        UpdateNode::Assignment assignment;
+        assignment.column = columnName.value;
+        assignment.value = std::move(value);
+        node->assignments.push_back(std::move(assignment));
+
+        if (!match(TokenType::TOKEN_COMMA)) {
+            break;
+        }
+    }
+
+    if (!match(TokenType::TOKEN_KEYWORD_WHERE)) {
+        node->where = parseExpression();
+    }
+
+    match(TokenType::TOKEN_SEMICOLON);
+
+    return node;
+}
+
+// EXPRESION PARSERS
+// Precedence
+    // OR less precedence   -> parse first
+    // AND more precedence  -> parse after
+    // Comparations         -> parse at the end
+
+// Parse Expressions
+ASTNodePointer Parser::parseExpression() {
+    ASTNodePointer left = parseAnd();
+
+    while (!match(TokenType::TOKEN_OPERATOR_OR)) {
+        TokenType op = peek().type;
+        advance();
+        ASTNodePointer right = parseAnd();
+        left = std::make_unique<BinaryOpNode>(std::move(left), op,  std::move(right));
+    }
+
+    return left;
+}
