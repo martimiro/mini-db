@@ -3,7 +3,6 @@
 #ifndef VISITOR_H
 #define VISITOR_H
 
-#include "ast.h"
 #include <string>
 #include <iostream>
 
@@ -26,17 +25,17 @@ class Visitor {
   public:
     virtual ~Visitor() = default;
 
-    virtual void visit(SelectNode) = 0;
-    virtual void visit(InsertNode) = 0;
-    virtual void visit(CreateTableNode) = 0;
-    virtual void visit(DeleteNode) = 0;
-    virtual void visit(UpdateNode) = 0;
-    virtual void visit(BinaryOpNode) = 0;
-    virtual void visit(IdentifyNode) = 0;
-    virtual void visit(IntLiteralNode) = 0;
-    virtual void visit(FloatLiteralNode) = 0;
-    virtual void visit(StringLiteralNode) = 0;
-    virtual void visit(BoolLiteralNode) = 0;
+    virtual void visit(SelectNode& node) = 0;
+    virtual void visit(InsertNode& node) = 0;
+    virtual void visit(CreateTableNode& node) = 0;
+    virtual void visit(DeleteNode& node) = 0;
+    virtual void visit(UpdateNode& node) = 0;
+    virtual void visit(BinaryOpNode& node) = 0;
+    virtual void visit(IdentifyNode& node) = 0;
+    virtual void visit(IntLiteralNode& node) = 0;
+    virtual void visit(FloatLiteralNode& node) = 0;
+    virtual void visit(StringLiteralNode& node) = 0;
+    virtual void visit(BoolLiteralNode& node) = 0;
 };
 
 // Print visitor -> prints AST with identitation
@@ -65,11 +64,12 @@ class PrintVisitor : public Visitor {
 
     // Prints actual indent
     void printIndetification() const {
-      std::cout << std::string(indentification_ * indentificationSize_ + ' ') << std::endl;
+      std::cout << std::string(indentification_ * indentificationSize_, ' ');
     }
 
     // Increments indent
-    void withIndetification(auto f) {
+    template <typename F>
+    void withIndetification(F f) {
       indentification_++;
       f();
       indentification_--;

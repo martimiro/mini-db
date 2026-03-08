@@ -6,11 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(include)
 
 add_executable(mini-db
-        src/main.cpp
+        main.cpp
         src/parser/token.cpp
         src/parser/lexer.cpp
         src/parser/parser.cpp
         include/parser/visitor.h
+        src/parser/vistor.cpp
 )
 
 add_executable(test_lexer

@@ -7,7 +7,9 @@
 #include <vector>
 #include <memory>   // For smart pointers
 
+class Visitor;
 class ASTNode;
+
 using ASTNodePointer = std::unique_ptr<ASTNode>;
 
 class ASTNode {
@@ -23,6 +25,7 @@ class ASTNode {
         // ONLY FOR DEBUG
         // Abstract method (every subclass must implement)
         virtual std::string toString(int indentitation = 0) const = 0;
+        virtual void accept(Visitor& visitor) = 0;
 };
 
 // Name of a column
@@ -38,6 +41,9 @@ class IdentifyNode : public ASTNode {
         std::string toString(int indentitation = 0) const override {
             return indentitationString(indentitation) + "Indetifier (" + name + ")";
         }
+
+        void accept(Visitor& visitor) override;
+
 };
 
 // EXPRESSION NODES
@@ -55,6 +61,9 @@ class IntLiteralNode : public ASTNode {
         std::string toString(int indentitation = 0) const override {
             return indentitationString(indentitation) + "IntLiteral (" + std::to_string(value) + ")";
         }
+
+        void accept(Visitor& visitor) override;
+
 };
 
 class FloatLiteralNode : public ASTNode {
@@ -69,6 +78,9 @@ class FloatLiteralNode : public ASTNode {
         std::string toString(int indentitation = 0) const override {
             return indentitationString(indentitation) + "FloatLiteral (" + std::to_string(value) + ")";
         }
+
+        void accept(Visitor& visitor) override;
+
 };
 
 class StringLiteralNode : public ASTNode {
@@ -82,6 +94,9 @@ class StringLiteralNode : public ASTNode {
         std::string toString(int indentitation = 0) const override {
             return indentitationString(indentitation) + "StringLiteral (" + value + ")";
         }
+
+        void accept(Visitor& visitor) override;
+
 };
 
 class BoolLiteralNode : public ASTNode {
@@ -96,6 +111,9 @@ class BoolLiteralNode : public ASTNode {
         std::string toString(int indentitation = 0) const override {
             return indentitationString(indentitation) + "BoolLiteral (" + std::to_string(value) + ")";
         }
+
+        void accept(Visitor& visitor) override;
+
 };
 
 class BinaryOpNode : public ASTNode {
@@ -117,6 +135,9 @@ class BinaryOpNode : public ASTNode {
                 right -> toString(indentitation + 1) + "\n" +
                 indentitationString(indentitation) + ")";
         }
+
+        void accept(Visitor& visitor) override;
+
 };
 
 // SENTENCE NODES
@@ -142,6 +163,8 @@ class CreateTableNode : public ASTNode {
 
             return str;
         }
+
+        void accept(Visitor& visitor) override;
 };
 
 // Insert node
@@ -159,6 +182,8 @@ class InsertNode : public ASTNode {
 
             return str;
         }
+
+        void accept(Visitor& visitor) override;
 };
 
 // SelectNode
@@ -187,6 +212,8 @@ class SelectNode : public ASTNode {
             }
             return str;
         }
+
+        void accept(Visitor& visitor) override;
 };
 
 // Delete Node
@@ -204,6 +231,7 @@ class DeleteNode : public ASTNode {
             }
             return str;
         }
+        void accept(Visitor& visitor) override;
 };
 
 // UpdateNode
@@ -235,6 +263,9 @@ class UpdateNode : public ASTNode {
 
             return str;
         }
+        void accept(Visitor& visitor) override;
 };
+
+#include "visitor.h"
 
 #endif // AST_H
