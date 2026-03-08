@@ -44,10 +44,8 @@ void assertFails(const std::string& sql, const std::string& testName) {
     }
 }
 
-// Check AST has excpected string
-void assertASTContains(const std::string& sql,
-                       const std::string& expected,
-                       const std::string& testName) {
+// Check AST has expected string
+void assertASTContains(const std::string& sql, const std::string& expected, const std::string& testName) {
     try {
         std::string ast = parseToString(sql);
         if (ast.find(expected) != std::string::npos) {

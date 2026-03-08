@@ -10,6 +10,7 @@ add_executable(mini-db
         src/parser/token.cpp
         src/parser/lexer.cpp
         src/parser/parser.cpp
+        include/parser/visitor.h
 )
 
 add_executable(test_lexer
