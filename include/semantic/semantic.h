@@ -18,6 +18,7 @@ struct TableSchema {
                 return true;
             }
         }
+        return false;
     }
 };
 
@@ -43,7 +44,7 @@ class Catalog {
 
 // Sematic error
 // Typed erros for semtanic mistakes
-class SemanticError {
+class SemanticError : public std::runtime_error {
     public:
     explicit SemanticError(const std::string& message): std::runtime_error("SemanticError: " + message) {}
 };
@@ -67,12 +68,12 @@ class SemanticAnalyzer : public Visitor {
         void visit(UpdateNode& node) override;
 
         // Expression nodes
-        void visit(BinaryOpNode& node)     override;
-        void visit(IdentifyNode& node)     override {}
-        void visit(IntLiteralNode& node)   override {}
+        void visit(BinaryOpNode& node) override;
+        void visit(IdentifyNode& node) override {}
+        void visit(IntLiteralNode& node) override {}
         void visit(FloatLiteralNode& node) override {}
-        void visit(StringLiteralNode& node)override {}
-        void visit(BoolLiteralNode& node)  override {}
+        void visit(StringLiteralNode& node) override {}
+        void visit(BoolLiteralNode& node) override {}
 };
 
 #endif //SEMANTIC_H
