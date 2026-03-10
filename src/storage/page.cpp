@@ -10,7 +10,7 @@ Page::Page(uint32_t pageId) {
     // Initializate headers
     header_.pageId = pageId;
     header_.numSlots = 0;
-    header_.freeSpaceOffset = HEADER_SIDE;
+    header_.freeSpaceOffset = HEADER_SIZE;
     header_.flags = 0;
 
     writeHeader();
