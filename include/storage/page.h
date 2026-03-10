@@ -8,8 +8,8 @@
 
 // Constants
 static constexpr uint32_t PAGE_SIZE = 4096;
-static constexpr uint32_t HEADER_SIDE = 16;
-static constexpr uint32_t SOLT_SIZE = 8;
+static constexpr uint32_t HEADER_SIZE = 16;
+static constexpr uint32_t SLOT_SIZE = 8;
 static constexpr uint32_t INVALID_OFFSET = 0xFFFFFFFF;
 
 // Slots
