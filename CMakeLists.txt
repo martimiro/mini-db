@@ -14,6 +14,8 @@ add_executable(mini-db
         src/parser/vistor.cpp
         include/semantic/semantic.h
         src/semantic/semantic.cpp
+        include/storage/page.h
+        src/storage/page.cpp
 )
 
 add_executable(test_lexer
