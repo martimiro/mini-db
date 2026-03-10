@@ -3,41 +3,55 @@
 #include "parser/visitor.h"
 #include "semantic/semantic.h"
 #include <iostream>
-#include <vector>
 #include <string>
 
+// REPL -> Read Eval Print Loop
 int main() {
-    std::vector<std::string> queries = {
-        "CREATE TABLE usuarios (id INT, nombre TEXT, edad INT);",
-        "INSERT INTO usuarios VALUES (1, \"Ana\", 25);",
-        "SELECT nombre, edad FROM usuarios WHERE edad > 20;",
-        "SELECT ciudad FROM usuarios WHERE edad > 20;",   // ← columna inválida
-        "DELETE FROM usuarios WHERE id = 1;",
-        "UPDATE usuarios SET nombre = \"Luis\" WHERE id = 1;",
-        "SELECT * FROM facturas;",                         // ← tabla inválida
-    };
-
     Catalog catalog;
     PrintVisitor printer;
     SemanticAnalyzer analyzer(catalog);
 
-    for (const auto& sql : queries) {
-        std::cout << "SQL: " << sql << "\n";
-        std::cout << std::string(50, '-') << "\n";
+    std::cout << "mini-db v0.1 — type 'exit' to quit\n";
+
+    std::string line;
+    while (true) {
+        std::cout << "\nmini-db> ";
+
+        // Read line
+        if (!std::getline(std::cin, line)) {
+            break;
+        }
+
+        // Trim whitespace
+        size_t start = line.find_first_not_of(" \t\r\n");
+        if (start == std::string::npos) continue;
+        line = line.substr(start);
+
+        // Exit commands
+        if (line == "exit" || line == "quit" || line == "\\q") {
+            std::cout << "Bye!\n";
+            break;
+        }
+
+        // Skip empty lines and comments
+        if (line.empty() || (line.size() >= 2 && line[0] == '-' && line[1] == '-')) {
+            continue;
+        }
+
+        // Execute
         try {
-            Lexer lexer(sql);
+            Lexer lexer(line);
             auto tokens = lexer.tokenizeAll();
             Parser parser(std::move(tokens));
             auto ast = parser.parse();
 
-            ast->accept(printer);    // imprimir AST
-            ast->accept(analyzer);   // validar semántica
+            ast->accept(printer);
+            ast->accept(analyzer);
         } catch (const SemanticError& e) {
-            std::cout << "❌ " << e.what() << "\n";
+            std::cout << e.what() << "\n";
         } catch (const std::exception& e) {
-            std::cout << "ERROR: " << e.what() << "\n";
+            std::cout << "Parse error: " << e.what() << "\n";
         }
-        std::cout << "\n";
     }
 
     return 0;
