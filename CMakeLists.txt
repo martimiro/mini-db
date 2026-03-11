@@ -13,6 +13,10 @@ add_executable(mini-db
         src/parser/visitor.cpp
         src/semantic/semantic.cpp
         src/storage/page.cpp
+        include/storage/record.h
+        src/storage/record.cpp
+        include/storage/disk_manager.h
+        src/storage/disk_manager.cpp
 )
 
 add_executable(test_lexer
