@@ -107,23 +107,31 @@ void testPersistence() {
         DiskManager dm(path);
         uint32_t pageId = dm.allocatePage();
         Page page(pageId);
-        const char* record = "persitance";
+        const char* record = "persistence";
         page.insertRecord(record, strlen(record));
         dm.writePage(pageId, page.rawData());
     }
 
     {
         DiskManager dm(path);
-        assertEqual(dm.getNumPages(), 1, "Page persist after reopening the file");
+        assertEqual(dm.getNumPages(), 1, "Page persist after reopening file");
 
         char buffer[PAGE_SIZE];
         dm.readPage(0, buffer);
 
         Page loaded = Page::fromRawData(buffer);
+
+        // ← DEBUG
+        std::cout << "  numSlots: " << loaded.getNumSlots() << "\n";
+        std::cout << "  pageId:   " << loaded.getPageId() << "\n";
+
         uint32_t len = 0;
         const char* result = loaded.getRecord(0, len);
-        assertTrue(std::memcmp(result, "persitance", 12) == 0,
-                   "Reg persist after reopening file");
+        std::cout << "  len: " << len << "\n";
+        std::cout << "  data: " << std::string(result, len) << "\n";
+
+        assertTrue(std::memcmp(result, "persistence", 12) == 0,
+                   "Reg persist afet reopening file");
     }
 
     removeFile(path);
@@ -185,7 +193,7 @@ int main() {
     std::cout << "\nWrite and read\n";
     testWriteAndRead();
 
-    std::cout << "\nPersitancen";
+    std::cout << "\nPersitance";
     testPersistence();
 
     std::cout << "\nInvalid page\n";
