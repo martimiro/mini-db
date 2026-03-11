@@ -23,6 +23,7 @@ add_executable(test_lexer
         test/test_lexer.cpp
         src/parser/token.cpp
         src/parser/lexer.cpp
+        test/test_disk_manager.cpp
 )
 
 add_executable(test_parser
@@ -36,4 +37,10 @@ add_executable(test_parser
 add_executable(test_page
         test/test_page.cpp
         src/storage/page.cpp
+)
+
+add_executable(test_disk_manager
+        test/test_disk_manager.cpp
+        src/storage/page.cpp
+        src/storage/disk_manager.cpp
 )

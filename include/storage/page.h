@@ -49,6 +49,8 @@ class Page {
         // Creates a empty page with a given ID
         explicit Page(uint32_t pageId);
 
+        // Load a page from a raw buffer (e.g. read from disk)
+        static Page fromRawData(const char* buffer);
         // Insert a record
         uint32_t insertRecord(const char* data, uint32_t length);
         // Read a record by slot index

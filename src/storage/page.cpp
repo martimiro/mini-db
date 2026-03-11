@@ -110,3 +110,14 @@ void Page::deleteRecord(uint32_t slotIndex) {
 
     setSlot(slotIndex, {INVALID_OFFSET, 0});
 }
+
+Page Page::fromRawData(const char* buffer) {
+    // Read pageId from first 4 bytes of buffer
+    uint32_t pageId;
+    std::memcpy(&pageId, buffer, sizeof(uint32_t));
+
+    Page page(pageId);
+    std::memcpy(page.data_, buffer, PAGE_SIZE);
+    page.readHeader();
+    return page;
+}
