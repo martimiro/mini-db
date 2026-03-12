@@ -45,4 +45,12 @@ add_executable(test_disk_manager
         test/test_disk_manager.cpp
         src/storage/page.cpp
         src/storage/disk_manager.cpp
+        test/test_buffer_pool.cpp
+)
+
+add_executable(test_buffer_pool
+        test/test_buffer_pool.cpp
+        src/storage/page.cpp
+        src/storage/disk_manager.cpp
+        src/storage/buffer_pool.cpp
 )

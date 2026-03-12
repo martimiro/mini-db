@@ -60,7 +60,7 @@ class BufferPool {
         // Force to write a page to disk immediately
         void flushPage(uint32_t pageId);
         // Write all pages to disk
-        void flushALl();
+        void flushAll();
         uint32_t poolSize() const {
             return poolSize_;
         }
