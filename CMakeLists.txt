@@ -19,6 +19,8 @@ add_executable(mini-db
         src/storage/disk_manager.cpp
         include/storage/buffer_pool.h
         src/storage/buffer_pool.cpp
+        include/storage/heap_file.h
+        src/storage/heap_file.cpp
 )
 
 add_executable(test_lexer

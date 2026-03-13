@@ -69,7 +69,7 @@ void DiskManager::readPage(uint32_t pageId, char* data) {
 }
 
 // Disk pages
-uint32_t DiskManager::getNumPages() {
+uint32_t DiskManager::getNumPages() const {
     return numPages_;
 }
 

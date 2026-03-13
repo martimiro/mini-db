@@ -26,7 +26,7 @@ class DiskManager {
         // Read a page from disk into buffer (must be PAGE_SIZE bytes)
         void readPage(uint32_t pageId, char* buffer);
         // Total number of pages in file
-        uint32_t getNumPages();
+        uint32_t getNumPages() const;
         // Allocate new pages
         uint32_t allocatePage();
 
