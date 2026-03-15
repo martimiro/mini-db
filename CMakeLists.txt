@@ -52,6 +52,7 @@ add_executable(test_buffer_pool
         src/storage/page.cpp
         src/storage/disk_manager.cpp
         src/storage/buffer_pool.cpp
+        test/test_executor.cpp
 )
 
 add_executable(test_heap_file
@@ -61,4 +62,19 @@ add_executable(test_heap_file
         src/storage/disk_manager.cpp
         src/storage/buffer_pool.cpp
         src/storage/heap_file.cpp
+)
+
+add_executable(test_executor
+        test/test_executor.cpp
+        src/parser/token.cpp
+        src/parser/lexer.cpp
+        src/parser/parser.cpp
+        src/parser/visitor.cpp
+        src/storage/page.cpp
+        src/storage/record.cpp
+        src/storage/disk_manager.cpp
+        src/storage/buffer_pool.cpp
+        src/storage/heap_file.cpp
+        src/storage/table_manager.cpp
+        src/executor/executor.cpp
 )
