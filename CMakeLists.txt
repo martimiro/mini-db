@@ -21,6 +21,7 @@ add_executable(mini-db
         src/storage/buffer_pool.cpp
         include/storage/heap_file.h
         src/storage/heap_file.cpp
+        test/test_heap_file.cpp
 )
 
 add_executable(test_lexer
@@ -55,4 +56,13 @@ add_executable(test_buffer_pool
         src/storage/page.cpp
         src/storage/disk_manager.cpp
         src/storage/buffer_pool.cpp
+)
+
+add_executable(test_heap_file
+        test/test_heap_file.cpp
+        src/storage/page.cpp
+        src/storage/record.cpp
+        src/storage/disk_manager.cpp
+        src/storage/buffer_pool.cpp
+        src/storage/heap_file.cpp
 )

@@ -11,7 +11,7 @@ std::vector<char> Record::serialize() const {
         uint8_t typeTage = static_cast<uint8_t>(fieldValue.type);
         buffer.push_back(static_cast<char>(typeTage));
 
-        if (fieldValue.type == fieldValue.type) {
+        if (fieldValue.type == FieldType::INT) {
             // Write 4 bytes little-endian int
             int32_t val = fieldValue.intValue;
             char bytes[4];
@@ -40,10 +40,10 @@ Record Record::deserialize(const char *data, uint32_t length) {
             throw std::length_error("Invalid record length");
         }
 
-        uint8_t typeTage = static_cast<uint8_t>(data[position]);
+        uint8_t typeTag = static_cast<uint8_t>(data[position]);
         position++;
 
-        if (typeTage == static_cast<uint8_t>(FieldType::INT)) {
+        if (typeTag == static_cast<uint8_t>(FieldType::INT)) {
             if (position + 4 > length) {
                 throw std::length_error("Invalid record length");
             }
@@ -53,20 +53,21 @@ Record Record::deserialize(const char *data, uint32_t length) {
             position += 4;
             record.fieldValues.push_back(FieldValue::makeInt(value));
 
-        } else if (typeTage == static_cast<uint8_t>(FieldType::TEXT)) {
+        } else if (typeTag == static_cast<uint8_t>(FieldType::TEXT)) {
             if (position + 4 > length) {
                 throw std::length_error("Invalid record length");
             }
 
-            int32_t length;
-            std::memcpy(&length, data + position, 4);
+            uint32_t textLen;
+            std::memcpy(&textLen, data + position, 4);
             position += 4;
 
-            if (position + length > length) {
+            if (position + textLen > length) {
                 throw std::length_error("Invalid record length");
             }
-            std::string text (data + position, length);
-            position += length;
+
+            std::string text(data + position, textLen);
+            position += textLen;
             record.fieldValues.push_back(FieldValue::makeText(text));
 
         } else {
