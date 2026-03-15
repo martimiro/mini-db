@@ -13,22 +13,19 @@ add_executable(mini-db
         src/parser/visitor.cpp
         src/semantic/semantic.cpp
         src/storage/page.cpp
-        include/storage/record.h
         src/storage/record.cpp
-        include/storage/disk_manager.h
         src/storage/disk_manager.cpp
-        include/storage/buffer_pool.h
         src/storage/buffer_pool.cpp
-        include/storage/heap_file.h
         src/storage/heap_file.cpp
-        test/test_heap_file.cpp
+        src/storage/table_manager.cpp
+        include/executor/executor.h
+        src/executor/executor.cpp
 )
 
 add_executable(test_lexer
         test/test_lexer.cpp
         src/parser/token.cpp
         src/parser/lexer.cpp
-        test/test_disk_manager.cpp
 )
 
 add_executable(test_parser
@@ -48,7 +45,6 @@ add_executable(test_disk_manager
         test/test_disk_manager.cpp
         src/storage/page.cpp
         src/storage/disk_manager.cpp
-        test/test_buffer_pool.cpp
 )
 
 add_executable(test_buffer_pool

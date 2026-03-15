@@ -38,6 +38,8 @@ class HeapFile {
         void deleteRecord(const RecordId& recordId);
         // Total number of pages
         uint32_t numPages() const;
+        BufferPool& getBufferPool() { return bufferPool_; }
+
 };
 
 #endif //HEAP_FILE_H
