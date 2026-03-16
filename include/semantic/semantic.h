@@ -74,6 +74,12 @@ class SemanticAnalyzer : public Visitor {
         void visit(FloatLiteralNode& node) override {}
         void visit(StringLiteralNode& node) override {}
         void visit(BoolLiteralNode& node) override {}
+
+        void visit(CreateIndexNode& node) override {}
+
+        void visit(BeginNode& node)    override {}
+        void visit(CommitNode& node)   override {}
+        void visit(RollbackNode& node) override {}
 };
 
 #endif //SEMANTIC_H

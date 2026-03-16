@@ -22,6 +22,14 @@ add_executable(mini-db
         src/executor/executor.cpp
         include/index/btree.h
         src/index/btree.cpp
+        include/index/index_manager.h
+        src/index/index_manager.cpp
+        include/transaction/wal.h
+        include/transaction/transaction_manager.h
+        src/transaction/wall.cpp
+        src/transaction/transaction_manager.cpp
+        include/storage/catalog.h
+        src/storage/catalog.cpp
 )
 
 add_executable(test_lexer

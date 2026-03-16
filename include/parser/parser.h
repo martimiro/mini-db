@@ -44,6 +44,8 @@ class Parser {
         ASTNodePointer parseAnd();
         ASTNodePointer parseComparison();
         ASTNodePointer parsePrimary();
+
+        ASTNodePointer parseCreateIndex();
 };
 
 #endif //PARSER_H

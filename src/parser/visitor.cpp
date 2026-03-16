@@ -167,3 +167,39 @@ void DeleteNode::accept(Visitor& visitor) {
 void UpdateNode::accept(Visitor& visitor) {
     visitor.visit(*this);
 }
+
+void PrintVisitor::visit(CreateIndexNode& node) {
+    printIndetification();
+    std::cout<< "CreateIndexNode (" << node.tableName << ")"<<std::endl;
+}
+
+void CreateIndexNode::accept(Visitor& visitor) {
+    visitor.visit(*this);
+}
+
+void PrintVisitor::visit(BeginNode& node) {
+    printIndetification();
+    std::cout << "Begin\n";
+}
+
+void PrintVisitor::visit(CommitNode& node) {
+    printIndetification();
+    std::cout << "Commit\n";
+}
+
+void PrintVisitor::visit(RollbackNode& node) {
+    printIndetification();
+    std::cout << "Rollback\n";
+}
+
+void BeginNode::accept(Visitor& visitor) {
+    visitor.visit(*this);
+}
+
+void CommitNode::accept(Visitor& visitor) {
+    visitor.visit(*this);
+}
+
+void RollbackNode::accept(Visitor& visitor) {
+    visitor.visit(*this);
+}

@@ -266,6 +266,43 @@ class UpdateNode : public ASTNode {
         void accept(Visitor& visitor) override;
 };
 
+class CreateIndexNode : public ASTNode {
+    public:
+        std::string indexName;
+        std::string tableName;
+        std::string columnName;
+
+        std::string toString(int indent = 0) const override{
+            return indentitationString(indent) + "CreateIndexNode (" + tableName + ")\n";
+        }
+
+    void accept(Visitor& visitor) override;
+};
+
+class BeginNode : public ASTNode {
+public:
+    std::string toString(int indent = 0) const override {
+        return indentitationString(indent) + "Begin\n";
+    }
+    void accept(Visitor& visitor) override;
+};
+
+class CommitNode : public ASTNode {
+public:
+    std::string toString(int indent = 0) const override {
+        return indentitationString(indent) + "Commit\n";
+    }
+    void accept(Visitor& visitor) override;
+};
+
+class RollbackNode : public ASTNode {
+public:
+    std::string toString(int indent = 0) const override {
+        return indentitationString(indent) + "Rollback\n";
+    }
+    void accept(Visitor& visitor) override;
+};
+
 #include "visitor.h"
 
 #endif // AST_H

@@ -58,6 +58,11 @@ Token &Parser::consume(TokenType type, const std::string &errorMessage) {
 ASTNodePointer Parser::parse() {
     if (check(TokenType::TOKEN_KEYWORD_CREATE)) {
         advance();
+
+        if (check(TokenType::TOKEN_KEYWORD_INDEX)) {
+            advance();
+            return parseCreateIndex();
+        }
         return parseCreateTable();
     }
     if (check(TokenType::TOKEN_KEYWORD_INSERT)) {
@@ -76,6 +81,22 @@ ASTNodePointer Parser::parse() {
         advance();
         return parseUpdate();
     }
+    if (check(TokenType::TOKEN_KEYWORD_BEGIN)) {
+        advance();
+        match(TokenType::TOKEN_SEMICOLON);
+        return std::make_unique<BeginNode>();
+    }
+    if (check(TokenType::TOKEN_KEYWORD_COMMIT)) {
+        advance();
+        match(TokenType::TOKEN_SEMICOLON);
+        return std::make_unique<CommitNode>();
+    }
+    if (check(TokenType::TOKEN_KEYWORD_ROLLBACK)) {
+        advance();
+        match(TokenType::TOKEN_SEMICOLON);
+        return std::make_unique<RollbackNode>();
+    }
+
 
     throw std::runtime_error("Error in line: " + std::to_string(peek().line) + " and column: " +
         std::to_string(peek().column) + " (sentence not reconized: \"" + peek().value + "\")");
@@ -348,4 +369,23 @@ ASTNodePointer Parser::parsePrimary() {
 
     throw std::runtime_error( "Error in line: " + std::to_string(peek().line) + " and in column: " +
         std::to_string(peek().column) + " (value no expected: \"" + peek().value + "\"");
+}
+
+ASTNodePointer Parser::parseCreateIndex() {
+    // CREATE INDEX name ON TABLE
+    Token& indexName = consume(TokenType::TOKEN_IDENTIFIER, "expected index name");
+    consume(TokenType::TOKEN_KEYWORD_ON, "expected ON");
+    Token& tableName = consume(TokenType::TOKEN_IDENTIFIER, "expected table name");
+    consume(TokenType::TOKEN_PUNCTUATION_LPAREN, "expected '(' ");
+    Token& columnName = consume(TokenType::TOKEN_IDENTIFIER, "expected column name");
+    consume(TokenType::TOKEN_PUNCTUATION_RPAREN, "expected ')'");
+
+    match(TokenType::TOKEN_SEMICOLON);
+
+    auto node = std::make_unique<CreateIndexNode>();
+    node->indexName = indexName.value;
+    node->tableName = tableName.value;
+    node->columnName = columnName.value;
+
+    return node;
 }

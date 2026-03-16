@@ -2,12 +2,14 @@
 #include "parser/parser.h"
 #include "executor/executor.h"
 #include "storage/table_manager.h"
+#include "transaction/transaction_manager.h"
 #include <iostream>
 #include <string>
 
 int main() {
     TableManager tableManager("./data");
-    Executor executor(tableManager);
+    TransactionManager txnManager(tableManager, "./data/wal.log");
+    Executor executor(tableManager, txnManager);
 
     std::cout << "mini-db v0.1 — type 'exit' to quit\n";
 
@@ -38,7 +40,7 @@ int main() {
             auto ast = parser.parse();
             ast->accept(executor);
         } catch (const std::exception& e) {
-            std::cout  << e.what() << "\n";
+            std::cout << e.what() << "\n";
         }
     }
 

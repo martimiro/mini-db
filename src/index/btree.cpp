@@ -57,12 +57,15 @@ std::vector<RecordId> BPlusTree::rangeSearch(BTreeKey low, BTreeKey high) {
 
 // Insert
 void BPlusTree::insert(BTreeKey key, RecordId recordId) {
+    std::cout << "DEBUG btree: insert key=" << key << " root=" << root_.get() << "\n";
+    std::cout << "DEBUG btree: root isLeaf=" << root_->isLeaf << " keys.size=" << root_->keys.size() << "\n";
     auto splitResult = insertInto(root_.get(), key, recordId);
+    std::cout << "DEBUG btree: insertInto done\n";
 
     if (splitResult.has_value()) {
         // Root split
         auto newRoot = std::make_unique<BTreeNode>(false);
-        newRoot -> keys.push_back(splitResult->promoteKey);
+        newRoot -> keys.push_back(splitResult->promotedKey);
         newRoot -> children.push_back(std::move(root_));
         newRoot -> children.push_back(std::move(splitResult->newNode));
         root_ = std::move(newRoot);
@@ -96,11 +99,11 @@ std::optional<SplitResult> BPlusTree::insertInto(BTreeNode* node, BTreeKey key, 
     }
 
     // Child split
-    node->keys.insert(node->keys.begin() + i, splitResult->promoteKey);
+    node->keys.insert(node->keys.begin() + i, splitResult->promotedKey);
     node->children.insert(node->children.begin() + i + 1, std::move(splitResult->newNode));
 
     if ((int(node->keys.size()) > MAX_KEYS)) {
-        return splitInternal(node, splitResult->promoteKey, std::move(node->children[i + 1]));
+        return splitInternal(node, splitResult->promotedKey, std::move(node->children[i + 1]));
     }
     return std::nullopt;
 }

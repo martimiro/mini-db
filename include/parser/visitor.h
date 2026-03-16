@@ -36,6 +36,10 @@ class Visitor {
     virtual void visit(FloatLiteralNode& node) = 0;
     virtual void visit(StringLiteralNode& node) = 0;
     virtual void visit(BoolLiteralNode& node) = 0;
+    virtual void visit(CreateIndexNode& node) = 0;
+    virtual void visit(BeginNode& node) = 0;
+    virtual void visit(CommitNode& node) = 0;
+    virtual void visit(RollbackNode& node) = 0;
 };
 
 // Print visitor -> prints AST with identitation
@@ -57,6 +61,10 @@ class PrintVisitor : public Visitor {
     void visit(FloatLiteralNode& node) override;
     void visit(StringLiteralNode& node) override;
     void visit(BoolLiteralNode& node) override;
+    void visit(CreateIndexNode& node) override;
+    void visit(BeginNode& node)    override;
+    void visit(CommitNode& node)   override;
+    void visit(RollbackNode& node) override;
 
   private:
     int indentification_;

@@ -36,7 +36,7 @@ struct BTreeNode {
 
 // Split result
 struct SplitResult {
-    BTreeKey promoteKey;
+    BTreeKey promotedKey;
     std::unique_ptr<BTreeNode> newNode;
 };
 
