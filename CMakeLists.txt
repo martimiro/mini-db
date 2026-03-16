@@ -20,6 +20,8 @@ add_executable(mini-db
         src/storage/table_manager.cpp
         include/executor/executor.h
         src/executor/executor.cpp
+        include/index/btree.h
+        src/index/btree.cpp
 )
 
 add_executable(test_lexer
@@ -53,6 +55,7 @@ add_executable(test_buffer_pool
         src/storage/disk_manager.cpp
         src/storage/buffer_pool.cpp
         test/test_executor.cpp
+        test/test_btree.cpp
 )
 
 add_executable(test_heap_file
@@ -77,4 +80,10 @@ add_executable(test_executor
         src/storage/heap_file.cpp
         src/storage/table_manager.cpp
         src/executor/executor.cpp
+)
+
+add_executable(test_btree
+    test/test_btree.cpp
+    src/storage/record.cpp
+    src/index/btree.cpp
 )
