@@ -196,14 +196,3 @@ rm -rf ./data
 ```
 
 ---
-
-## Limitations
-
-- No JOIN support
-- No FLOAT or BOOL column types
-- B+Tree indexes are not persisted to disk (recreate with CREATE INDEX after restart)
-- No ALTER TABLE
-- Single-user only (no concurrent transactions)
-- No query optimizer
-
----
