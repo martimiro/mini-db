@@ -50,8 +50,8 @@ Start the REPL and type SQL queries:
 
 ```sql
 CREATE TABLE users (id INT, name TEXT, age INT);
-INSERT INTO users VALUES (1, "Ana", 25);
-INSERT INTO users VALUES (2, "Luis", 30);
+INSERT INTO users VALUES (1, "Anna", 25);
+INSERT INTO users VALUES (2, "Lluis", 30);
 INSERT INTO users VALUES (3, "Maria", 22);
 
 SELECT * FROM users;
